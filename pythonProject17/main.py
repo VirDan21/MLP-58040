@@ -1,51 +1,70 @@
-import cv2
 import numpy as np
-import matplotlib.pyplot as plt
+import cv2 as cv
 
-
-#example 1
-#import cv2
-#img = cv2.imread("google1.png", cv2.IMREAD_COLOR)
-
-#cv2.imshow("google1.png",img)
-#cv2.waitKey(0)
-#cv2.destroyAllWindow()
+#cap = cv.VideoCapture(0)
 
 
 
-#example 2
-#img = cv2.imread("google1.png")
+#if not cap.isOpened():
+  #  print("Cannot open camera")
+   # exit()
 
-#plt.imshow(img)
+#while True:
 
-#plt.waitforbuttonpress()
-#plt.close('all')
-
-
-
-#example 3
-
-#path = r'google1.png'
-#img = cv2.imread(path,cv2.IMREAD_GRAYSCALE)
-
-#cv2.imshow('google1.png',img)
-#cv2.waitKey(0)
-#cv2.destroyAllWindows()
+   # ret, frame = cap.read()
 
 
-
-#example 4
-
-vid = cv2.VideoCapture(0)
-while (True):
-
-    ret,frame =vid.read()
-    cv2.imshow('frame',frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-       break
+   # print("Frame capture status:", ret)
 
 
-vid.release()
-cv2.destroyAllWindows()
+   # if not ret:
+      #  print("Can't receive frame (stream end?). Exiting ...")
+     #   break
 
 
+   # gray_frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+
+
+   # cv.imshow('Grayscale Frame', gray_frame)
+
+  #  if cv.waitKey(1) == ord('q'):
+    #    break
+
+
+#cap.release()
+#cv.destroyAllWindows()
+
+
+
+
+cap = cv.VideoCapture(0)
+
+fourcc = cv.VideoWriter_fourcc(*'XVID')
+out = cv.VideoWriter('output.mp4v', fourcc, 20.0, (640, 480))
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting ...")
+        break
+
+    cv.imshow('frame', frame)
+    out.write(frame)
+    if cv.waitKey(1) == ord('q'):
+        break
+
+cap.release()
+out.release()
+cv.destroyAllWindows()
+
+cap = cv.VideoCapture('output.mp4v')
+while cap.isOpened():
+        ret, frame = cap.read()
+       # if frame is read correctly ret is true
+        if not ret:
+            print("Can't receive frame (stream end?). Exiting ...")
+            break
+        cv.imshow('frame', frame)
+        if cv.waitKey(1) == ord ('w'):
+            break
+cap.release()
+cv.destroyAllWindows()
